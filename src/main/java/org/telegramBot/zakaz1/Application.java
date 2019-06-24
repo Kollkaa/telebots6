@@ -1,3 +1,4 @@
+package org.telegramBot.zakaz1;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,15 +11,17 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class Application {
-    static Bot bot;
+   static Bot bot;
     public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         System.out.println("contunie");
@@ -31,7 +34,7 @@ public class Application {
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();
         }
-        SpringApplication.run(Application.class, args);
+
         final ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
         ses.scheduleWithFixedDelay(new Runnable() {
             @Override
@@ -99,6 +102,8 @@ public class Application {
         System.out.println("Jsoup can also parse HTML file directly");
         System.out.println("title : " + title);
         System.out.println("class of div tag : " + cssClass);
+
+
 
     }
 
