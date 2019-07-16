@@ -47,7 +47,7 @@ public class Bot extends TelegramLongPollingBot {
             {
 
                 switch (update.getMessage().getText())
-                        ///d
+                        ///dd
                 {
                     case "/shut":
                         shutdown=true;
