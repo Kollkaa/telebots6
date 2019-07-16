@@ -6,6 +6,11 @@ public class User {
     private String chat_id;
     private String  type_doc;
     private boolean admin_support;
+
+    public ArrayList<String> getDocument_path() {
+        return document_path;
+    }
+
     private ArrayList<String> document_path=new ArrayList<>();
 
     public void AddDocument(String path)
@@ -32,5 +37,7 @@ public class User {
         this.admin_support = admin_support;
     }
 
-
+    public String getChat_id() {
+        return chat_id;
+    }
 }

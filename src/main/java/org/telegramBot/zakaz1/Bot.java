@@ -85,6 +85,13 @@ public class Bot extends TelegramLongPollingBot {
                         e.printStackTrace();
                     }
                 }
+                try {
+                    sendApiMethod(send_Message_With_Remake("Это ещё не всё?, если ты закончил нажми на [Отправить]"
+                            ,8,user.getChat_id()));
+
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
 
             if (update.getMessage().getText()!=null)
@@ -92,6 +99,16 @@ public class Bot extends TelegramLongPollingBot {
 
                 switch (update.getMessage().getText())
                 {
+                    case "Отправить":
+                        for (String path: user.getDocument_path())
+                        {
+                            try {
+                                execute(new SendDocument().setChatId(support_id).setDocument(new File(path)));
+                            } catch (TelegramApiException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        break;
                     case "/shut":
                         shutdown=true;
                         break;
@@ -917,7 +934,6 @@ public class Bot extends TelegramLongPollingBot {
             rows.add(row10);
         }
         if (type==4)
-
         {
             KeyboardRow row1=new KeyboardRow();
             KeyboardRow row2=new KeyboardRow();
@@ -993,7 +1009,8 @@ public class Bot extends TelegramLongPollingBot {
             rows.add(row6);
             rows.add(row7);
         }
-        if (type==7) {
+        if (type==7)
+        {
             KeyboardRow row1 = new KeyboardRow();
             KeyboardRow row2 = new KeyboardRow();
             KeyboardRow row3 = new KeyboardRow();
@@ -1004,6 +1021,18 @@ public class Bot extends TelegramLongPollingBot {
             rows.add(row2);
             rows.add(row3);
         }
+        if(type==8)
+        {   KeyboardRow row1=new KeyboardRow();
+            KeyboardRow row2=new KeyboardRow();
+            KeyboardRow row3=new KeyboardRow();
+            row1.add(new KeyboardButton("Список документов"));
+            row2.add(new KeyboardButton("Цены на услуги"));
+            row3.add(new KeyboardButton("Отправить"));
+
+            rows.add(row1);
+            rows.add(row2);
+            rows.add(row3);
+            }
         keyboard.setKeyboard(rows);
         return new SendMessage().setChatId(chat_id).setText(text).setReplyMarkup(keyboard);
     }
