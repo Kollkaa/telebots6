@@ -45,14 +45,7 @@ public class Bot extends TelegramLongPollingBot {
             }
             if (update.getMessage().getText()!=null)
             {
-                if (user.isAdmin_support())
-                {
-                    try {
-                        sendApiMethod(new SendMessage().setChatId(support_id).setText(update.getMessage().getText()));
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
-                }
+
                 switch (update.getMessage().getText())
                 {
                     case "/shut":
@@ -467,7 +460,7 @@ public class Bot extends TelegramLongPollingBot {
                         if (user.isAdmin_support())
                         {
                             try {
-                                sendApiMethod(new SendMessage().setChatId(support_id).setText(update.getMessage().getText()));
+                                sendApiMethod(new SendMessage().setChatId(support_id).setText(update.getMessage().getText()+" from "+update.getCallbackQuery().getMessage().getChatId()));
                             } catch (TelegramApiException e) {
                                 e.printStackTrace();
                             }
