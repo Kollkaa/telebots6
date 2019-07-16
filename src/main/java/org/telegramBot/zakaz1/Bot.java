@@ -1,9 +1,14 @@
 package org.telegramBot.zakaz1;
 
+import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
+import org.telegram.telegrambots.meta.api.methods.GetFile;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -12,6 +17,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.*;
 
 public class Bot extends TelegramLongPollingBot {
@@ -19,6 +29,34 @@ public class Bot extends TelegramLongPollingBot {
     Map<String,User> users=new HashMap<>();
     User user;
     String support_id="314254027";
+    public String uploadFile(String file_name, String file_id, String chat_id) throws IOException {
+        GetFile getFile = new GetFile();
+        getFile.setFileId(file_id);
+
+        org.telegram.telegrambots.meta.api.objects.File file = null;
+        try {
+            file = execute(getFile);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+        InputStream fileUrl = null;
+        try {
+            fileUrl = new URL(file.getFileUrl(getBotToken())).openStream();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        File localFile = new File("src/main/resources/"+chat_id+"/"+file_name);
+        String path="src/main/resources/"+chat_id+"/"+file_name;
+        try {
+            FileUtils.copyInputStreamToFile(fileUrl, localFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Uploaded!");
+        return path;
+    }
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage())
@@ -35,14 +73,20 @@ public class Bot extends TelegramLongPollingBot {
             {
              user=users.get(update.getMessage().getChatId().toString());
             }
-            if (update.getMessage().isReply())
-            {
-                try {
-                    sendApiMethod(new SendMessage().setChatId(update.getMessage().getReplyToMessage().getText().split("from")[1].trim()).setText(update.getMessage().getText()));
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
+            if (update.getMessage().hasDocument())
+            {  System.out.println("Document");
+                if (user.isAdmin_support())
+                {
+                    try {
+                       users.get(update.getMessage().getChatId()).AddDocument(uploadFile(update.getMessage().getDocument().getFileName()
+                                ,update.getMessage().getDocument().getFileId()
+                                ,update.getMessage().getChatId().toString()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
             if (update.getMessage().getText()!=null)
             {
 
@@ -457,10 +501,18 @@ public class Bot extends TelegramLongPollingBot {
                         }
                         break;
                     default:
-                        if (user.isAdmin_support())
+                        if (update.getMessage().isReply())
                         {
                             try {
-                                sendApiMethod(new SendMessage().setChatId(support_id).setText(update.getMessage().getText()+" from "+update.getCallbackQuery().getMessage().getChatId()));
+                                sendApiMethod(new SendMessage().setChatId(update.getMessage().getReplyToMessage().getText().split("from")[1].trim()).setText(update.getMessage().getText()));
+                            } catch (TelegramApiException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else if (user.isAdmin_support())
+                        {
+                            try {
+                                sendApiMethod(new SendMessage().setChatId(support_id).setText(update.getMessage().getText()+" from "+update.getMessage().getChatId()));
                             } catch (TelegramApiException e) {
                                 e.printStackTrace();
                             }
@@ -471,8 +523,17 @@ public class Bot extends TelegramLongPollingBot {
             }
 
        }
+
         if(update.hasCallbackQuery())
         {
+            if (!users.containsKey(update.getCallbackQuery().getMessage().getChatId().toString())) {
+                users.put(update.getCallbackQuery().getMessage().getChatId().toString(), new User(update.getCallbackQuery().getMessage().getChatId().toString()));
+                user=users.get(update.getCallbackQuery().getMessage().getChatId().toString());
+            }
+            else
+            {
+                user=users.get(update.getCallbackQuery().getMessage().getChatId().toString());
+            }
             if(update.getCallbackQuery().getData()!=null)
             {
                 switch (update.getCallbackQuery().getData())
