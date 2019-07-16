@@ -500,6 +500,7 @@ public class Bot extends TelegramLongPollingBot {
 
                         break;
                     case "1.2.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -513,6 +514,7 @@ public class Bot extends TelegramLongPollingBot {
                         }
                         break;
                     case "1.3.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -527,6 +529,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.4.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -541,6 +544,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.5.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -555,6 +559,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.6.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -569,6 +574,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.7.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -583,6 +589,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.8.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -597,6 +604,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.9.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -611,6 +619,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.10.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -625,6 +634,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.11.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -639,6 +649,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.12.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -653,6 +664,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.13.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -667,6 +679,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.14.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -681,6 +694,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.15.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -695,6 +709,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.16.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -709,6 +724,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.17.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
@@ -723,6 +739,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "1.18.1":
+                        user.setAdmin_support(true);
                         try {
                             sendApiMethod(new SendMessage().setText("оформить").setChatId(update.getCallbackQuery().getMessage().getChatId()));
                         } catch (TelegramApiException e) {
