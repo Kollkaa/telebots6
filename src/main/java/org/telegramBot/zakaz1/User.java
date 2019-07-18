@@ -1,9 +1,22 @@
 package org.telegramBot.zakaz1;
 
+import java.util.ArrayList;
+
 public class User {
     private String chat_id;
     private String  type_doc;
     private boolean admin_support;
+
+    public ArrayList<String> getDocument_path() {
+        return document_path;
+    }
+
+    private ArrayList<String> document_path=new ArrayList<>();
+
+    public void AddDocument(String path)
+    {
+        document_path.add(path);
+    }
 
     public User(String chat_id) {
         this.chat_id = chat_id;
@@ -22,5 +35,9 @@ public class User {
 
     public void setAdmin_support(boolean admin_support) {
         this.admin_support = admin_support;
+    }
+
+    public String getChat_id() {
+        return chat_id;
     }
 }
