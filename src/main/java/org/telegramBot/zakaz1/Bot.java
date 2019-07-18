@@ -906,6 +906,7 @@ public class Bot extends TelegramLongPollingBot {
             row2.add(new KeyboardButton("Цены на услуги\uD83E\uDD11\uD83D\uDCC4"));
             rows.add(row1);
             rows.add(row2);
+            //
         }
         if(type==2)
         {
