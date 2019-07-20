@@ -27,6 +27,7 @@ import java.util.*;
 public class Bot extends TelegramLongPollingBot {
    boolean shutdown=false;
    boolean shut=false;
+   boolean flag=false;
     Map<String,User> users=new HashMap<>();
     List<String>listNickname=new ArrayList<>();
     User user;
@@ -62,6 +63,7 @@ public class Bot extends TelegramLongPollingBot {
     }
     @Override
     public void onUpdateReceived(Update update) {
+        flag=false;
 //        if (update.hasMessage()){
 //            if (shutdown==true){
 //                System.out.println("Close");
@@ -116,6 +118,14 @@ public class Bot extends TelegramLongPollingBot {
                         e.printStackTrace();
                     }
                 }
+                else if (flag==true && ("/admin"+pass)!=("/adminandrew")){
+                    try {
+                        sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Неправильный ввод"));
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+
+                }
 
                 switch (update.getMessage().getText())
                 ///dd
@@ -146,8 +156,10 @@ public class Bot extends TelegramLongPollingBot {
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
-                        System.out.println("/admin"+pass);
+                        break;
+
                     case "/admin":
+                        flag=true;
 
 
                         try {
@@ -209,12 +221,13 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "/start":
+                        flag=false;
                         listNickname.add(update.getMessage().getChat().getUserName());
                         count += 1;
                         user.setAdmin_support(false);
                         try {
-                            sendApiMethod(send_Message_With_Remake("Здравстуйте, с помощью этого бота стало возможно оформлять документы в Польше\uD83C\uDDF5\uD83C\uDDF1.\n" +
-                                            "Для начала оформления, воспользуйтесь кнопками на клавиатуре\uD83D\uDD3D.\n"
+                            sendApiMethod(send_Message_With_Remake("Здравстуйте, с помощью этого бота стало возможно оформлять документы в Польше\uD83C\uDDF5\uD83C\uDDF1\n" +
+                                            "Для начала оформления, воспользуйтесь клавишами на клавиатуре\uD83D\uDD3D\n"
                                     , 1, update.getMessage().getChatId().toString()));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
