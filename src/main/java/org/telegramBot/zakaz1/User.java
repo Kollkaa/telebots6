@@ -6,6 +6,8 @@ public class User {
     private String chat_id;
     private String  type_doc;
     private boolean admin_support;
+    private  boolean admin;
+
 
     public ArrayList<String> getDocument_path() {
         return document_path;
@@ -18,10 +20,18 @@ public class User {
         document_path.add(path);
     }
 
-    public User(String chat_id) {
+    public User(String chat_id, boolean admin) {
         this.chat_id = chat_id;
+        this. admin=admin;
     }
 
+
+    public boolean  getAdmin() {
+        return admin;
+    }
+    public void   setAdmin(boolean admin) {
+        this.admin = admin;
+    }
     public String  getType_doc() {
         return type_doc;
     }

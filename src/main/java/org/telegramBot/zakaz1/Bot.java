@@ -9,6 +9,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.Document;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -33,34 +35,34 @@ public class Bot extends TelegramLongPollingBot {
     User user;
     String support_id="516538254";//"314254027";
     int count=0;
-    public String uploadFile(String file_name, String file_id, String chat_id) throws IOException {
-        GetFile getFile = new GetFile();
-        getFile.setFileId(file_id);
-
-        org.telegram.telegrambots.meta.api.objects.File file = null;
-        try {
-            file = execute(getFile);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-        InputStream fileUrl = null;
-        try {
-            fileUrl = new URL(file.getFileUrl(getBotToken())).openStream();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        File localFile = new File("src/main/resources/"+chat_id+"/"+file_name);
-        String path="src/main/resources/"+chat_id+"/"+file_name;
-        try {
-            FileUtils.copyInputStreamToFile(fileUrl, localFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Uploaded!");
-        return path;
-    }
+//    public String uploadFile(String file_name, String file_id, String chat_id) throws IOException {
+//        GetFile getFile = new GetFile();
+//        getFile.setFileId(file_id);
+//
+//        org.telegram.telegrambots.meta.api.objects.File file = null;
+//        try {
+//            file = execute(getFile);
+//        } catch (TelegramApiException e) {
+//            e.printStackTrace();
+//        }
+//        InputStream fileUrl = null;
+//        try {
+//            fileUrl = new URL(file.getFileUrl(getBotToken())).openStream();
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        File localFile = new File("src/main/resources/"+chat_id+"/"+file_name);
+//        String path="src/main/resources/"+chat_id+"/"+file_name;
+//        try {
+//            FileUtils.copyInputStreamToFile(fileUrl, localFile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("Uploaded!");
+//        return path;
+//    }
     @Override
     public void onUpdateReceived(Update update) {
         flag=false;
@@ -78,29 +80,33 @@ public class Bot extends TelegramLongPollingBot {
         if (update.hasMessage()) {
             System.out.println(update.getMessage().getChatId().toString());
             if (!users.containsKey(update.getMessage().getChatId().toString())) {
-                users.put(update.getMessage().getChatId().toString(), new User(update.getMessage().getChatId().toString()));
+                users.put(update.getMessage().getChatId().toString(), new User(update.getMessage().getChatId().toString(),false));
                 user = users.get(update.getMessage().getChatId().toString());
             } else {
                 user = users.get(update.getMessage().getChatId().toString());
             }
             if (update.getMessage().hasDocument()) {
-                System.out.println("Document");
-                if (user.isAdmin_support()) {
-                    try {
-                        users.get(update.getMessage().getChatId()).AddDocument(uploadFile(update.getMessage().getDocument().getFileName()
-                                , update.getMessage().getDocument().getFileId()
-                                , update.getMessage().getChatId().toString()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                try {
-                    sendApiMethod(send_Message_With_Remake("Это ещё не всё?.если ты закончил нажмите на [Отправить]"
-                            , 8, user.getChat_id()));
+                Document doc =update.getMessage().getDocument();
+                System.out.println(doc.toString());
 
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
+//                System.out.println("Document");
+//                if (user.isAdmin_support()) {
+//                    try {
+//                        users.get(update.getMessage().getChatId()).AddDocument(uploadFile(update.getMessage().getDocument().getFileName()
+//                                , update.getMessage().getDocument().getFileId()
+//                                , update.getMessage().getChatId().toString()));
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                try {
+//                    sendApiMethod(send_Message_With_Remake("Это ещё не всё?.если ты закончил нажмите на [Отправить]"
+//                            , 8, user.getChat_id()));
+//
+//                } catch (TelegramApiException e) {
+//                    e.printStackTrace();
+//                }
+
             }
 
             if (update.getMessage().getText() != null) {
@@ -112,7 +118,7 @@ public class Bot extends TelegramLongPollingBot {
                         e.printStackTrace();
                     }
                     try {
-                        sendApiMethod(send_Message_With_Remake("Доступные документы для просмотра информации: 1.Приглашение воеводское" + "\n" + "2.Полугодовое приглашение" + "\n" + "3.Комплект документов на карту побыту" + "\n" + "4.Карта побыту рабочая(с внеском)" + "\n" + "5.Карта побыту рабочая(без внеска)" + "\n" + "6.Мельдунок" + "\n" + "7.Умовы найму" + "\n" + "8.Wstepne" + "\n" + "9.Cан-эпид" + "\n" + "10.Психотесты для водителей" + "\n" + "11.Orzeczenie для водителей" + "\n" + "12.Код 95" + "\n" + "13.Получение банковского кредита" + "\n" + "14.Выписка из банка" + "\n" + "1.Страховка авто/человек" + "\n" + "Команды для управления ботом:" + "\n" + "/show - статистика посетителей "
+                        sendApiMethod(send_Message_With_Remake("Доступные документы для просмотра информации:"+"\n"+" 1.Приглашение воеводское" + "\n" + "2.Полугодовое приглашение" + "\n" + "3.Комплект документов на карту побыту" + "\n" + "4.Карта побыту рабочая(с внеском)" + "\n" + "5.Карта побыту рабочая(без внеска)" + "\n" + "6.Мельдунок" + "\n" + "7.Умовы найму" + "\n" + "8.Wstepne" + "\n" + "9.Cан-эпид" + "\n" + "10.Психотесты для водителей" + "\n" + "11.Orzeczenie для водителей" + "\n" + "12.Код 95" + "\n" + "13.Получение банковского кредита" + "\n" + "14.Выписка из банка" + "\n" + "1.Страховка авто/человек" + "\n" + "Команды для управления ботом:" + "\n" + "/show - статистика посетителей "
                                 + "\n" + "/on - включить бота" + "\n" + "/off - выключить бота", 666, update.getMessage().getChatId().toString()));
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
@@ -159,6 +165,7 @@ public class Bot extends TelegramLongPollingBot {
                         break;
 
                     case "/admin":
+                        user.setAdmin(true);
                         flag=true;
 
 
@@ -226,156 +233,73 @@ public class Bot extends TelegramLongPollingBot {
                         count += 1;
                         user.setAdmin_support(false);
                         try {
-                            sendApiMethod(send_Message_With_Remake("Здравстуйте, с помощью этого бота стало возможно оформлять документы в Польше\uD83C\uDDF5\uD83C\uDDF1\n" +
-                                            "Для начала оформления, воспользуйтесь клавишами на клавиатуре\uD83D\uDD3D\n"
+                            execute(new SendPhoto().setPhoto(new File("C:\\Users\\BOSS\\IdeaProjects\\POLAND\\src\\main\\java\\org\\telegramBot\\zakaz1\\photos\\photo_2019-07-23_15-43-03.jpg")).setChatId(update.getMessage().getChatId()));
+
+
+                            sendApiMethod(send_Message_With_Remake("\uD83D\uDC68\uD83C\uDFFC\u200D\uD83D\uDCBCGarant DOC - любие документы в Варшаве и Польше !\n" +
+                                            "Гарантия низкой цены, быстрого результата и высокого качества выполненной работы. \n" +
+                                            "\n" +
+                                            "У НАС \uD83D\uDC4D\uD83C\uDFFC:\n" +
+                                            "\uD83D\uDD18 только легальные документы !\n" +
+                                            "\uD83D\uDD18 90% позитивный результатов ! \n" +
+                                            "\uD83D\uDD18 всегда делаем в сроки ! \n" +
+                                            "\uD83D\uDD18 бесплатная консультация !"
                                     , 1, update.getMessage().getChatId().toString()));
+
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
-                    case "Инструкция по использованию\uD83D\uDCD6":
+                    case "Помощь❗️":
                         user.setAdmin_support(false);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(user.getChat_id()).setText("Здравствуйте, пользование этим ботом очень простое..\n" +
-                                    "1.Для начала работы, выберите пункт на клавиатуре который вас интересует.\n" +
-                                    "2.При нажатии на Список документов, вы получите возможность оформить доступные документы.\n" +
-                                    "3.Для этого вам нужно выбрать документ и нажать кнопочку заказать.\n" +
-                                    "4.После прохождения этой процедуры, с вами свяжеться наш админимтратор. Благодорим что вы снами)\n"));
+                            sendApiMethod(new SendMessage().setChatId(user.getChat_id()).setText(" ⁃ Как пользоваться ботом ?\n" +
+                                    "Здравствуйте, все очень просто !\n" +
+                                    " 1. выберите и нажмите на пункт Меню\n" +
+                                    " 2. нажмите на документ который вам надо \n" +
+                                    " 3. ознакомтесь и нажмите кнопку ЗАКАЗАТЬ\n" +
+                                    "4. отправьте нужные данные для оформления документа\n" +
+                                    "5.После прохождения этой процедуры, с вами свяжеться наш администратор"));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
-                    case "Список документов\uD83D\uDCC4":
+                    case "Меню\uD83D\uDCC4":
                         user.setAdmin_support(false);
 
                         try {
-                            sendApiMethod(send_Message_With_Remake("Выберете необходимый пункт ⬇️ ", 4, update.getMessage().getChatId().toString()));
+                            sendApiMethod(send_Message_With_Remake("Доступные документы для просмотра информации:"+"\n"+"1.Приглашение воеводское" + "\n" + "2.Полугодовое приглашение" + "\n" + "3.Комплект документов на карту побыту" + "\n" + "4.Карта побыту рабочая(с внеском)" + "\n" + "5.Карта побыту рабочая(без внеска)" + "\n" + "6.Мельдунок" + "\n" + "7.Умовы найму" + "\n" + "8.Wstepne" + "\n" + "9.Cан-эпид" + "\n" + "10.Психотесты для водителей" + "\n" + "11.Orzeczenie для водителей" + "\n" + "12.Код 95" + "\n" + "13.Получение банковского кредита" + "\n" + "14.Выписка из банка" + "\n" + "15.Страховка авто/человек" + "\n" +
+                                    "Выберете необходимый пункт ⬇️ ", 666, update.getMessage().getChatId().toString()));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
-                    case "Слудующие документы➡️":
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Выберете необходимый пункт ⬇", 6, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
+
                     case "Вернуться  в главное меню↩️":
                         user.setAdmin_support(false);
                         try {
-                            sendApiMethod(send_Message_With_Remake("Выберете необходимый пункт ⬇", 1, update.getMessage().getChatId().toString()));
+                            sendApiMethod(send_Message_With_Remake("Выберете необходимый пункт ⬇️ ", 1, update.getMessage().getChatId().toString()));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "Назад↩️":
                         user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Выберете необходимый пункт ⬇", 4, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "1.Приглашение воеводское":
 
-                        user.setAdmin_support(false);
-                        user.setType_doc(TypeDoc.type_1_1_1);
                         try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: все заполненные страницы паспорта, выберете страну ниже", 5, update.getMessage().getChatId().toString()));
+                            sendApiMethod(send_Message_With_Remake("Доступные документы для просмотра информации:"+"\n"+"1.Приглашение воеводское" + "\n" + "2.Полугодовое приглашение" + "\n" + "3.Комплект документов на карту побыту" + "\n" + "4.Карта побыту рабочая(с внеском)" + "\n" + "5.Карта побыту рабочая(без внеска)" + "\n" + "6.Мельдунок" + "\n" + "7.Умовы найму" + "\n" + "8.Wstepne" + "\n" + "9.Cан-эпид" + "\n" + "10.Психотесты для водителей" + "\n" + "11.Orzeczenie для водителей" + "\n" + "12.Код 95" + "\n" + "13.Получение банковского кредита" + "\n" + "14.Выписка из банка" + "\n" + "15.Страховка авто/человек" + "\n" +
+                                    "Выберете необходимый пункт ⬇️ ", 666, update.getMessage().getChatId().toString()));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
-                    case "2.Полугодовое":
-                        user.setType_doc(TypeDoc.type_1_1_2);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: все заполненные страницы паспорта" + "\n" + "Страны: Украина, Росия, Беларусь.\n Цена 180 зл.\n Срок до 10 дн.", 33, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "3.Комплект Документов на карту побыту (залончник, умова, КРС)":
-                        user.setType_doc(TypeDoc.type_7_7_7);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: По указанию менеджера" + "\n" + "Цена 400 зл.\n Срок 1-2 дн.", 33, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "4.Карта побыту рабочая (оплата внеска входит)":
-                        user.setType_doc(TypeDoc.type_1_2);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: По индивидуальной записи" + "\n" + " Любая страна,\n Цена: 2900 зл.\n Срок: 6-8 мес.", 33, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "5.Карта побыту рабочая (оплата внеска не входит)":
-                        user.setType_doc(TypeDoc.type_1_2_2);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: По индивидуальной записи" + "\n" + " Любая страна,\n Цена: 1000 зл.\n Срок: 6-8 мес.", 33, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "6.Мельдунок (1 мес) + ПЕСЕЛЬ":
-                        user.setType_doc(TypeDoc.type_1_3);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: первая страница паспорта и печать, либо виза, либо карта" + "\n" + "Любая страна.\n Цена: 150 зл.\n Срок: 1 час.\n Каждый след месяц: 75 зл", 33, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "7.Умовы найму":
-                        user.setType_doc(TypeDoc.type_1_4);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: фото первой страницы паспорта и с какого числа" + "\n" + "Любая страна.\n Цена 200 зл.\n Срок в течении 1 дня", 33, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "8.Wstępne (powyżej 3 m)":
-                        user.setType_doc(TypeDoc.type_1_5);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: фото паспорта, место жительства в Варшаве\n" +
-                                    " (при необходиомости: название фирмы," +
-                                    " адрес фирмы, должность, с какого числа)" + "\n" + "Любая страна.\n Цена 60 зл.\n Срок в течении 1 дня.", 33, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "9.Сан-эпид с (orzeczeniem) и анализами":
-                        user.setType_doc(TypeDoc.type_1_6);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: фото паспорта, место жительства в Варшаве\n" +
-                                    " (при необходиомости: название фирмы," +
-                                    " адрес фирмы, должность, с какого числа)" + "\n" + "Любая страна.\n Цена 80 зл.\n Срок в течении 1 дня.", 33, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "Следующие усуги➡️":
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("...", 6, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
+
+
+
                     case "1.Украина, Росиия, Белларусь":
                         user.setAdmin_support(false);
                         try {
-                            sendApiMethod(send_Message_With_Remake("Цена 900 зл.\n Срок до 40дн", 33, update.getMessage().getChatId().toString()));
+                            sendApiMethod(send_Message_With_Remake("\uD83D\uDCB5Цена: 1000 zł (Украина, Росиия, Белларусь )", 33, update.getMessage().getChatId().toString()));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
@@ -397,35 +321,9 @@ public class Bot extends TelegramLongPollingBot {
                             e.printStackTrace();
                         }
                         break;
-                    case "10.Психотесты для водителей":
-                        user.setType_doc(TypeDoc.type_1_7);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: фото паспорта, место жительства в Варшаве" + "\n" + "Любая страна.\n Цена 70 зл.\n Срок в течении 1 дня.", 777, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "11.Orzeczenie для водителей":
-                        user.setType_doc(TypeDoc.type_1_8);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: фото паспорта, место жительства в Варшаве" + "\n" + "Любая страна.\n Цена 70 зл.\n Срок в течении 1 дня.", 777, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "12.Код 95 (литовский) с переводом на польский, психотестами и orzeczeniem":
 
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: фото паспорта, место жительства в Варшаве, фото прав(две стороны)", 7, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
                     case "1.Короткий":
-                        user.setType_doc(TypeDoc.type_1_9_1);
+                        user.setType_doc(TypeDoc.type_1_9_12);
                         user.setAdmin_support(false);
                         try {
                             sendApiMethod(send_Message_With_Remake("Любая страна.\n Цена 1300 зл.\n Срок до 10 дн.", 777, update.getMessage().getChatId().toString()));
@@ -434,7 +332,7 @@ public class Bot extends TelegramLongPollingBot {
                         }
                         break;
                     case "2.Длинный":
-                        user.setType_doc(TypeDoc.type_1_9_2);
+                        user.setType_doc(TypeDoc.type_1_9_12_1);
                         user.setAdmin_support(false);
                         try {
                             sendApiMethod(send_Message_With_Remake("Любая страна.\n Цена 2800 зл.\n Срок до 20 дн.", 777, update.getMessage().getChatId().toString()));
@@ -442,153 +340,335 @@ public class Bot extends TelegramLongPollingBot {
                             e.printStackTrace();
                         }
                         break;
-                    case "13.Получение банковского кредита":
-                        user.setType_doc(TypeDoc.type_1_10);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: номер паспорта" + "\n" + "Любая страна.\n Цена 10% от сумы.\n Срок по ситуации.", 777, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "14.Выписка из банка":
-                        user.setType_doc(TypeDoc.type_1_11);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: по указанию менеджера \n" + "Любая страна.\n Цена 100 зл.\n Срок  1 дн.", 777, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "15.Страховка авто/человек":
-                        user.setType_doc(TypeDoc.type_1_12);
-                        user.setAdmin_support(false);
-                        try {
-                            sendApiMethod(send_Message_With_Remake("Cписок необходимых документов: фото паспорта, место жит. " +
-                                    "В Варшаве (дата с какого по какое)/ фото техпаспорта" + "\n" + "Любая страна.\n Цена по ситуации зл.\n Срок  1 дн.", 777, update.getMessage().getChatId().toString()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
+
                     case "1":
+                        user.setType_doc(TypeDoc.type_1_1_1);
+
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: все заполненные страницы паспорта, выберете страну ниже"));
+                            execute(new SendPhoto().setPhoto(new File("C:/Users/BOSS/IdeaProjects/POLAND/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_14-14-20.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Приглашение воеводское и полугодовое\n" +
+                                    "\n" +
+                                    "\uD83D\uDCDDПриглашение воеводское на год\n" +
+                                    "⏳Срок изготовления 30-45 дней",5,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: \n" +
+                                    "- все заполненные страницы паспорта "));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "2":
+                        user.setType_doc(TypeDoc.type_1_1_2);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: все заполненные страницы паспорта, выберете страну ниже"));
+                            execute(new SendPhoto().setPhoto(new File("C:/Users/BOSS/IdeaProjects/POLAND/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_14-14-20.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("\uD83D\uDCDDПриглашение полугодовые\n" +
+                                    "⏳Срок изготовления 8-10 дней\n" +
+                                    "\uD83D\uDCB5Цена: 350 zł (Украина, Росиия, Белларусь )",33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: \n" +
+                                    "- все заполненные страницы паспорта "));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
+                        break;
 
-                        break;
                     case "3":
+                        user.setType_doc(TypeDoc.type_1_1_3);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: По указанию менеджера"));
+                            execute(new SendPhoto().setPhoto(new File("C:/Users/BOSS/IdeaProjects/POLAND/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-07-52.jpg")).setChatId(update.getMessage().getChatId()));
+
+                            sendApiMethod(send_Message_With_Remake("Комплект Документов на карту побыту\n" +
+                                    " \uD83D\uDDC2(залончник, умова, КРС)\n" +
+                                    "\n" +
+                                    "⏳Время ожидания 1 час\n" +
+                                    "\uD83D\uDCB5Цена: 500 zl ",33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: По указанию менеджера \n"
+                                   ));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
+
                     case "4":
+                        user.setType_doc(TypeDoc.type_1_1_4);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: По индивидуальной записи"));
+                            execute(new SendPhoto().setPhoto(new File("C:/Users/BOSS/IdeaProjects/POLAND/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-14-02.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Карта побыту рабочая / студенческая\n" +
+                                    "любая страна + полный пакет документов (оплата внеска входит)\n" +
+                                    "\n" +
+                                    "⏳Время ожидания 30-45 дней\n" +
+                                    "\uD83D\uDCB5Цена: 2800 zl  ",33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: По индивидуальной записи\n"
+                            ));
+
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "5":
+                        user.setType_doc(TypeDoc.type_1_1_5);
+
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: По индивидуальной записи"));
+                            execute(new SendPhoto().setPhoto(new File("C:/Users/BOSS/IdeaProjects/POLAND/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-14-02.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Карта побыту рабочая / студенческая\n" +
+                                    "любая страна + полный пакет документов (оплата внеска входит)\n" +
+                                    "\n" +
+                                    "⏳Время ожидания 30-45 дней\n" +
+                                    "\uD83D\uDCB5Цена: 1900 zl  ",33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("  первая страница паспорта \n" +
+                                    "-  либо виза, либо карта"
+                            ));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "6":
+                        user.setType_doc(TypeDoc.type_1_1_6);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: первая страница паспорта и печать, либо виза, либо карта"));
+                            execute(new SendPhoto().setPhoto(new File("C:/Users/BOSS/IdeaProjects/POLAND/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-18-24.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Мельдунок (1 мес) + ПЕСЕЛЬ\n" +
+                                    "\n" +
+                                    "⏳Время ожидания 1 час\n" +
+                                    "\uD83D\uDCB5Цена: 200 zl  \n" +
+                                    "каждый след. месяц + 100 zl" , 33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("  первая страница паспорта \n" +
+                                    "-  либо виза, либо карта"));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "7":
+                        user.setType_doc(TypeDoc.type_1_1_7);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: фото первой страницы паспорта и с какого числа"));
+                            execute(new SendPhoto().setPhoto(new File("C:/Users/BOSS/IdeaProjects/POLAND/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-20-38.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Умовы найму\n" +
+                                    "\n" +
+                                    "⏳Время ожидания 1 день\n" +
+                                    "\uD83D\uDCB5Цена: 250 zl  " , 33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: \n" +
+                                    "- фото первой страницы паспорта \n" +
+                                    "- с какого числа"));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "8":
+                        user.setType_doc(TypeDoc.type_1_1_8);
+
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: фото паспорта, место жительства в Варшаве\n" +
-                                    " (при необходиомости: название фирмы," +
-                                    " адрес фирмы, должность, с какого числа)"));
+                            execute(new SendPhoto().setPhoto(new File("C:/Users/BOSS/IdeaProjects/POLAND/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-24-45.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Wstępne (powyżej 3 m) \n" +
+                                    "\n" +
+                                    "⏳Время ожидания 1 день\n" +
+                                    "\uD83D\uDCB5Цена: 100 zl   " , 33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: \n" +
+                                    "- фото паспорта \n" +
+                                    "- место жительства в Варшаве\n" +
+                                    "При необходиомости: \n" +
+                                    "- название фирмы \n" +
+                                    "- адрес фирмы -\n" +
+                                    "- должность\n" +
+                                    "- с какого числа"));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "9":
+                        user.setType_doc(TypeDoc.type_1_1_9);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: фото паспорта, место жительства в Варшаве\n" +
-                                    " (при необходиомости: название фирмы," +
-                                    " адрес фирмы, должность, с какого числа)"));
+                            execute(new SendPhoto().setPhoto(new File("C:/Users/BOSS/IdeaProjects/POLAND/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-27-38.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("медкнижка SANEPID \n" +
+                                    "+ к ней orzeczenie lekarskie \n" +
+                                    "+ анализы \n" +
+                                    "\n" +
+                                    "⏳Время ожидания 1 день\n" +
+                                    "\uD83D\uDCB5Цена: 120 zl " , 33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: \n" +
+                                    "- фото паспорта \n" +
+                                    "- место жительства в Варшаве\n" +
+                                    "При необходиомости: \n" +
+                                    "- название фирмы \n" +
+                                    "- адрес фирмы -\n" +
+                                    "- должность\n" +
+                                    "- с какого числа"));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "10":
+                        user.setType_doc(TypeDoc.type_1_1_10);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: фото паспорта, место жительства в Варшаве"));
+                            execute(new SendPhoto().setPhoto(new File("C:\\Users\\BOSS\\IdeaProjects\\POLAND\\src\\main\\java\\org\\telegramBot\\zakaz1\\photos\\photo_2019-07-23_15-29-35.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Психотесты для водителей\n" +
+                                    "\n" +
+                                    "⏳Время ожидания 1 день\n" +
+                                    "\uD83D\uDCB5Цена: 120 zl  " , 33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: \n" +
+                                    "- фото паспорта \n" +
+                                    "- место жительства в Варшаве."));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "11":
+                        user.setType_doc(TypeDoc.type_1_1_11);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: фото паспорта, место жительства в Варшаве"));
+                            execute(new SendPhoto().setPhoto(new File("C:\\Users\\BOSS\\IdeaProjects\\POLAND\\src\\main\\java\\org\\telegramBot\\zakaz1\\photos\\photo_2019-07-23_15-32-58.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Orzeczenie для водителей\n" +
+                                    "\n" +
+                                    "⏳Время ожидания 1 день\n" +
+                                    "\uD83D\uDCB5Цена: 120 zl  " , 33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: \n" +
+                                    "- фото паспорта \n" +
+                                    "- место жительства в Варшаве."));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "12":
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: фото паспорта, место жительства в Варшаве, фото прав(две стороны)"));
+                            sendApiMethod(send_Message_With_Remake("Код95\n" +
+                                    "\n" +
+                                    "⏳Время ожидания до 10 дней\n" +
+                                    "\uD83D\uDCB5Цена: 1300 zl  " , 7,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов:\n" +
+                                    "- фото паспорта\n" +
+                                    "- место жительства в Варшаве\n" +
+                                    "- фото прав(две стороны)"));
+
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "13":
+                        user.setType_doc(TypeDoc.type_1__1_13);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: номер паспорта"));
+                            execute(new SendPhoto().setPhoto(new File("C:\\Users\\BOSS\\IdeaProjects\\POLAND\\src\\main\\java\\org\\telegramBot\\zakaz1\\photos\\photo_2019-07-23_15-36-14.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Помощь в получение банковского кредита\n" +
+                                    "\n" +
+                                    "⏳Время ожидания (по ситуации)\n" +
+                                    "\uD83D\uDCB5Цена: индивидуально " , 33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Список необходимых документов:\n" +
+                                    "-  номер паспорта"));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "14":
+                        user.setType_doc(TypeDoc.type_1_1_14);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: по указанию менеджера"));
+                            execute(new SendPhoto().setPhoto(new File("C:\\Users\\BOSS\\IdeaProjects\\POLAND\\src\\main\\java\\org\\telegramBot\\zakaz1\\photos\\photo_2019-07-23_15-39-10.jpg")).setChatId(update.getMessage().getChatId()));
+                            sendApiMethod(send_Message_With_Remake("Выписка из банка\n" +
+                                    "\n" +
+                                    "⏳Время ожидания 1 день\n" +
+                                    "\uD83D\uDCB5Цена: 150 zl  " , 33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов: по указанию менеджера. "));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
                     case "15":
+                        user.setType_doc(TypeDoc.type_1_1_15);
                         try {
-                            sendApiMethod(new SendMessage().setChatId(update.getMessage().getChatId()).setText("Cписок необходимых документов: фото паспорта, место жит. " +
-                                    "В Варшаве (дата с какого по какое)/ фото техпаспорта"));
+
+                            sendApiMethod(send_Message_With_Remake("Страховка авто/человек"+"\n" +
+                                    "\n" +
+                                    "⏳Время ожидания 1 день\n" +
+                                    "\uD83D\uDCB5Цена: ндивидуально  " , 33,update.getMessage().getChatId().toString()));
+                            execute(new SendMessage().setChatId(update.getMessage().getChatId().toString()).setText("Cписок необходимых документов:  \n" +
+                                    "- фото паспорта \n" +
+                                    "- место жительства В Варшаве \n" +
+                                    "- дата с какого по какое \n" +
+                                    "- фото техпаспорта (если машина)"));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
-                    case "Cвязаться с менеджером":
+                    case "К выбору докуметов" :
+
                         user.setAdmin_support(false);
                         try {
-                            sendApiMethod(send_Message_With_Remake("Профиль администратора: @Frikok", 333, update.getMessage().getChatId().toString()));
+                            sendApiMethod(send_Message_With_Remake("Доступные документы для просмотра информации:"+"\n"+"1.Приглашение воеводское" + "\n" + "2.Полугодовое приглашение" + "\n" + "3.Комплект документов на карту побыту" + "\n" + "4.Карта побыту рабочая(с внеском)" + "\n" + "5.Карта побыту рабочая(без внеска)" + "\n" + "6.Мельдунок" + "\n" + "7.Умовы найму" + "\n" + "8.Wstepne" + "\n" + "9.Cан-эпид" + "\n" + "10.Психотесты для водителей" + "\n" + "11.Orzeczenie для водителей" + "\n" + "12.Код 95" + "\n" + "13.Получение банковского кредита" + "\n" + "14.Выписка из банка" + "\n" + "15.Страховка авто/человек" + "\n" +
+                            "Выберете необходимый пункт ⬇️ ", 666, update.getMessage().getChatId().toString()));
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
                         break;
+
+                    case "Сотрудничество\uD83D\uDC64":
+                        user.setAdmin_support(false);
+                        try {
+                            sendApiMethod(send_Message_With_Remake("Выберете пункт для сотрудничиства\uD83D\uDD3D", 111, update.getMessage().getChatId().toString()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "Навигатор Польшы\uD83C\uDDF5\uD83C\uDDF1":
+                        user.setAdmin_support(false);
+                        try {
+                            sendApiMethod(send_Message_With_Remake("Выберете город\uD83D\uDD3D", 222, update.getMessage().getChatId().toString()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "Варшава":
+                        try {
+                            sendApiMethod(send_Message_With_Remake("⁃ Объявления https://t.me/warsaw_chats\n" +
+                                    " ⁃ Работа https://t.me/Warsawwork\n" +
+                                    " ⁃ Рынок  https://t.me/warsaw_shop\n" +
+                                    " ⁃ Жилье https://t.me/warsaw_1\n" +
+                                    " - Знакомства и вечеринки https://t.me/warsawchat\n" +
+                                    " ⁃ Каталог услуг | Варшава https://t.me/warsaw_poland\n" +
+                                    "\n" +
+                                    "Варшава объявления \uD83D\uDECE | Польша \uD83C\uDDF5\uD83C\uDDF1\n" +
+                                    "\uD83C\uDFF0Группа для объявлений |Варшава\uD83C\uDDF5\uD83C\uDDF1\n" +
+                                    "Здесь каждый может опубликовать товар или услугу.",333,update.getMessage().getChatId().toString()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+
+                        }
+                        break;
+                    case "Вроцлав":
+                        try {
+                            sendApiMethod(send_Message_With_Remake("https://t.me/Wroclaw_poland",333,update.getMessage().getChatId().toString()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+
+                        }
+                        break;
+                    case "Краков":
+                        try {
+                            sendApiMethod(send_Message_With_Remake("https://t.me/Krakow_poland",333,update.getMessage().getChatId().toString()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+
+                        }
+                        break;
+                    case "Познань":
+                        try {
+                            sendApiMethod(send_Message_With_Remake("https://t.me/Poznan_poland",333,update.getMessage().getChatId().toString()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+
+                        }
+                        break;
+                    case "Документы":
+                        try {
+                            sendApiMethod(send_Message_With_Remake("Продавец-консультант всего один \uD83D\uDC68\uD83C\uDFFC\u200D\uD83D\uDCBC\n" +
+                                    "\uD83D\uDCF2Контакт: @garant_doc",333,update.getMessage().getChatId().toString()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+
+                        }
+                        break;
+
+                    case "Реклама":
+                        try {
+                            sendApiMethod(send_Message_With_Remake("Контакт для сотрудничества: @frikok"+"\n"+"https://teletype.in/@lassis/HkDmvNhCN",333,update.getMessage().getChatId().toString()));
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+
+
                     default:
                         if (update.getMessage().isReply()) {
                             try {
@@ -611,312 +691,6 @@ public class Bot extends TelegramLongPollingBot {
 
        }
 
-        if(update.hasCallbackQuery())
-        {
-            if (!users.containsKey(update.getCallbackQuery().getMessage().getChatId().toString())) {
-                users.put(update.getCallbackQuery().getMessage().getChatId().toString(), new User(update.getCallbackQuery().getMessage().getChatId().toString()));
-                user=users.get(update.getCallbackQuery().getMessage().getChatId().toString());
-            }
-            else
-            {
-                user=users.get(update.getCallbackQuery().getMessage().getChatId().toString());
-            }
-            if(update.getCallbackQuery().getData()!=null)
-            {
-                switch (update.getCallbackQuery().getData())
-                {
-                    case "1.1.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-
-                        break;
-                    case "1.2.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case "1.3.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.4.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.5.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.6.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.7.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.8.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.9.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.10.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.11.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.12.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.13.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.14.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.15.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.16.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.17.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    case "1.18.1":
-                        user.setAdmin_support(true);
-                        try {
-
-                            sendApiMethod(new SendMessage().setText("Спасибо за форомление, ваш запрос отправлен администратору.\n"+"В скором времени мы свяжемся с вами\uD83D\uDE0A\n").setChatId(user.getChat_id()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        user.setType_doc(TypeDoc.type_1_7);
-                        try {
-                            sendApiMethod(new SendMessage().setChatId(support_id).setText("Запрос от пользователя:"+"@"+update.getCallbackQuery().getMessage().getChat().getUserName()+"\n"+user.getType_doc()+" from "+update.getCallbackQuery().getMessage().getChatId()));
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                }
-
-
-            }
-        }
     }
 
 
@@ -949,121 +723,22 @@ public class Bot extends TelegramLongPollingBot {
             KeyboardRow row1=new KeyboardRow();
             KeyboardRow row2=new KeyboardRow();
             KeyboardRow row3=new KeyboardRow();
+            KeyboardRow row4=new KeyboardRow();
 
-            row1.add(new KeyboardButton("Список документов\uD83D\uDCC4"));
-            row2.add(new KeyboardButton("Cвязаться с менеджером"));
-            row3.add(new KeyboardButton("Инструкция по использованию\uD83D\uDCD6"));
+
+            row1.add(new KeyboardButton("Меню\uD83D\uDCC4"));
+            row2.add(new KeyboardButton("Помощь❗️"));
+            row3.add(new KeyboardButton("Навигатор Польшы\uD83C\uDDF5\uD83C\uDDF1"));
+            row4.add(new KeyboardButton("Сотрудничество\uD83D\uDC64"));
 
             rows.add(row1);
             rows.add(row2);
             rows.add(row3);
+            rows.add(row4);
             //
         }
-        if(type==2)
-        {
-            KeyboardRow row1=new KeyboardRow();
-            KeyboardRow row2=new KeyboardRow();
-            KeyboardRow row3=new KeyboardRow();
-            KeyboardRow row4=new KeyboardRow();
-            KeyboardRow row5=new KeyboardRow();
-            KeyboardRow row6=new KeyboardRow();
-            KeyboardRow row7=new KeyboardRow();
-            KeyboardRow row8=new KeyboardRow();
-            KeyboardRow row9=new KeyboardRow();
-            KeyboardRow row10=new KeyboardRow();
-            KeyboardRow row11=new KeyboardRow();
-            row1.add(new KeyboardButton("1.Приглашения"));
-            row2.add(new KeyboardButton("2.Карта побыту"));
-            row3.add(new KeyboardButton("3.Мельдунок + песель"));
-            row4.add(new KeyboardButton("4.Умовы найму"));
-            row5.add(new KeyboardButton("5.Wstępne (powyżej 3 m)"));
-            row6.add(new KeyboardButton("6.Сан-эпид с (orzeczeniem) и анализами"));
-            row7.add(new KeyboardButton("7.Психотесты для водителей"));
-            row8.add(new KeyboardButton("8.Orzeczenie для водителей"));
-            row9.add(new KeyboardButton("9.Код 95 (литовский) с переводом на\n польский, психотестами и orzeczeniem"));
-            row10.add(new KeyboardButton("Слудующие документы➡️"));
-            row11.add(new KeyboardButton("Вернуться назад в меню↩️"));
-            rows.add(row1);
-            rows.add(row2);
-            rows.add(row3);
-            rows.add(row4);
-            rows.add(row5);
-            rows.add(row6);
-            rows.add(row7);
-            rows.add(row8);
-            rows.add(row9);
-            rows.add(row10);
-            rows.add(row11);
-        }
-        if(type==3)
-        {
-            KeyboardRow row1=new KeyboardRow();
-            KeyboardRow row2=new KeyboardRow();
-            KeyboardRow row3=new KeyboardRow();
-            KeyboardRow row4=new KeyboardRow();
-            KeyboardRow row5=new KeyboardRow();
-            KeyboardRow row6=new KeyboardRow();
-            KeyboardRow row7=new KeyboardRow();
-            KeyboardRow row8=new KeyboardRow();
-            KeyboardRow row9=new KeyboardRow();
-            KeyboardRow row10=new KeyboardRow();
-            row1.add(new KeyboardButton("10.Получение банковского кредита"));
-            row2.add(new KeyboardButton("11.Выписка из банка"));
-            row3.add(new KeyboardButton("12.Страховка авто/человек"));
-            row4.add(new KeyboardButton("13.Анализы на сальмонеллу (analiza na nosicielstwo)"));
-            row5.add(new KeyboardButton("14.Получение номеров PESEL и NIP"));
-            row6.add(new KeyboardButton("15.Водительское удостоверение Украины любой категории с записью в базе ГАИ"));
-            row7.add(new KeyboardButton("16.Заполнение налоговых деклараций PIT"));
-            row8.add(new KeyboardButton("17.Справка о несудимости"));
-            row9.add(new KeyboardButton("18.БХП"));
-            row10.add(new KeyboardButton("Вернуться назад в меню↩️"));
-            rows.add(row1);
-            rows.add(row2);
-            rows.add(row3);
-            rows.add(row4);
-            rows.add(row5);
-            rows.add(row6);
-            rows.add(row7);
-            rows.add(row8);
-            rows.add(row9);
-            rows.add(row10);
-        }
-        if (type==4)
-        {
-            KeyboardRow row1=new KeyboardRow();
-            KeyboardRow row2=new KeyboardRow();
-            KeyboardRow row3=new KeyboardRow();
-            KeyboardRow row4=new KeyboardRow();
-            KeyboardRow row5=new KeyboardRow();
-            KeyboardRow row6=new KeyboardRow();
-            KeyboardRow row7=new KeyboardRow();
-            KeyboardRow row8=new KeyboardRow();
-            KeyboardRow row9=new KeyboardRow();
-            KeyboardRow row10=new KeyboardRow();
-            KeyboardRow row11=new KeyboardRow();
-            row1.add(new KeyboardButton("1.Приглашение воеводское"));
-            row2.add(new KeyboardButton("2.Полугодовое"));
-            row3.add(new KeyboardButton("3.Комплект Документов на карту побыту (залончник, умова, КРС)"));
-            row4.add(new KeyboardButton("4.Карта побыту рабочая (оплата внеска входит)"));
-            row5.add(new KeyboardButton("5.Карта побыту рабочая (оплата внеска не входит)"));
-            row6.add(new KeyboardButton("6.Мельдунок (1 мес) + ПЕСЕЛЬ"));
-            row7.add(new KeyboardButton("7.Умовы найму"));
-            row8.add(new KeyboardButton("8.Wstępne (powyżej 3 m)"));
-            row9.add(new KeyboardButton("9.Сан-эпид с (orzeczeniem) и анализами"));
-            row10.add(new KeyboardButton("Следующие усуги➡️"));
-            row11.add(new KeyboardButton("Вернуться  в главное меню↩️"));
-            rows.add(row1);
-            rows.add(row2);
-            rows.add(row3);
-            rows.add(row4);
-            rows.add(row5);
-            rows.add(row6);
-            rows.add(row7);
-            rows.add(row8);
-            rows.add(row9);
-            rows.add(row10);
-            rows.add(row11);
-        }
+
+
         if (type==5)
         {
             System.out.println("in block");
@@ -1082,34 +757,7 @@ public class Bot extends TelegramLongPollingBot {
             System.out.println("Complete Reply");
 
         }
-        if(type==6)
-        {
-            KeyboardRow row1=new KeyboardRow();
-            KeyboardRow row2=new KeyboardRow();
-            KeyboardRow row3=new KeyboardRow();
-            KeyboardRow row4=new KeyboardRow();
-            KeyboardRow row5=new KeyboardRow();
-            KeyboardRow row6=new KeyboardRow();
-            KeyboardRow row7=new KeyboardRow();
-            KeyboardRow row8=new KeyboardRow();
-            row1.add(new KeyboardButton("10.Психотесты для водителей"));
-            row2.add(new KeyboardButton("11.Orzeczenie для водителей"));
-            row3.add(new KeyboardButton("12.Код 95 (литовский) с переводом на польский, психотестами и orzeczeniem"));
-            row4.add(new KeyboardButton("13.Получение банковского кредита"));
-            row5.add(new KeyboardButton("14.Выписка из банка"));
-            row6.add(new KeyboardButton("15.Страховка авто/человек"));
-            row7.add(new KeyboardButton("Назад↩️"));
-            row8.add(new KeyboardButton("Вернуться  в главное меню↩️"));
 
-            rows.add(row1);
-            rows.add(row2);
-            rows.add(row3);
-            rows.add(row4);
-            rows.add(row5);
-            rows.add(row6);
-            rows.add(row7);
-            rows.add(row8);
-        }
         if (type==7)
         {
             KeyboardRow row1 = new KeyboardRow();
@@ -1122,18 +770,7 @@ public class Bot extends TelegramLongPollingBot {
             rows.add(row2);
             rows.add(row3);
         }
-        if(type==8)
-        {   KeyboardRow row1=new KeyboardRow();
-            KeyboardRow row2=new KeyboardRow();
-            KeyboardRow row3=new KeyboardRow();
-            row1.add(new KeyboardButton("Список документов"));
-            row2.add(new KeyboardButton("Цены на услуги"));
-            row3.add(new KeyboardButton("Отправить"));
 
-            rows.add(row1);
-            rows.add(row2);
-            rows.add(row3);
-            }
         if(type==33)
         {   KeyboardRow row1=new KeyboardRow();
             KeyboardRow row2=new KeyboardRow();
@@ -1195,7 +832,7 @@ public class Bot extends TelegramLongPollingBot {
             row5.add(new KeyboardButton("13"));
             row5.add(new KeyboardButton("14"));
             row5.add(new KeyboardButton("15"));
-            row6.add(new KeyboardButton("/start"));
+            row6.add(new KeyboardButton("Вернуться  в главное меню↩️"));
 
 
 
@@ -1210,6 +847,50 @@ public class Bot extends TelegramLongPollingBot {
             rows.add(row6);
 
         }
+        if(type==0000)
+        {   KeyboardRow row1=new KeyboardRow();
+            KeyboardRow row2=new KeyboardRow();
+            KeyboardRow row3=new KeyboardRow();
+            row1.add(new KeyboardButton("Заказать"));
+            row3.add(new KeyboardButton("К выбору докуметов"));
+            row2.add(new KeyboardButton("Вернуться  в главное меню↩️"));
+
+
+            rows.add(row1);
+            rows.add(row2);
+
+        }
+        if (type == 111){
+            KeyboardRow row1=new KeyboardRow();
+            KeyboardRow row2=new KeyboardRow();
+            KeyboardRow row3=new KeyboardRow();
+            row1.add(new KeyboardButton("Реклама"));
+            row2.add(new KeyboardButton("Документы"));
+            row3.add(new KeyboardButton("Вернуться  в главное меню↩️"));
+            rows.add(row1);
+            rows.add(row2);
+            rows.add(row3);
+
+        }
+        if(type == 222){
+            KeyboardRow row1=new KeyboardRow();
+            KeyboardRow row2=new KeyboardRow();
+            KeyboardRow row3=new KeyboardRow();
+            KeyboardRow row4=new KeyboardRow();
+            KeyboardRow row5=new KeyboardRow();
+            row1.add(new KeyboardButton("Варшава"));
+            row2.add(new KeyboardButton("Вроцлав"));
+            row3.add(new KeyboardButton("Познань"));
+            row4.add(new KeyboardButton("Краков"));
+            row5.add(new KeyboardButton("Вернуться  в главное меню↩️"));
+            rows.add(row1);
+            rows.add(row2);
+            rows.add(row3);
+            rows.add(row4);
+            rows.add(row5);
+
+
+        }
 
 
 
@@ -1219,13 +900,14 @@ public class Bot extends TelegramLongPollingBot {
     }
 
 
+
     @Override
     public String getBotUsername() {
-        return "@DocumentPolanbot";
+        return "@MainTestingBot";
     }
 
     @Override
     public String getBotToken() {
-        return "752923360:AAFIgs8LlIse4dqW-xxeVDxgQILuadKUvFk";
+        return "827254840:AAEQDeDVnv1H4ebAW-q30ZS0POwGld4ZBAc";
     }
 }
