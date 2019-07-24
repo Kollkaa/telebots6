@@ -233,7 +233,7 @@ public class Bot extends TelegramLongPollingBot {
                         count += 1;
                         user.setAdmin_support(false);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-43-03.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-43-03.jpg")).setChatId(update.getMessage().getChatId()));
 
 
                             sendApiMethod(send_Message_With_Remake("\uD83D\uDC68\uD83C\uDFFC\u200D\uD83D\uDCBCGarant DOC - любие документы в Варшаве и Польше !\n" +
@@ -345,7 +345,7 @@ public class Bot extends TelegramLongPollingBot {
                         user.setType_doc(TypeDoc.type_1_1_1);
 
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_14-14-20.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_14-14-20.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Приглашение воеводское и полугодовое\n" +
                                     "\n" +
                                     "\uD83D\uDCDDПриглашение воеводское на год\n" +
@@ -359,7 +359,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "2":
                         user.setType_doc(TypeDoc.type_1_1_2);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_14-14-20.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_14-14-20.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("\uD83D\uDCDDПриглашение полугодовые\n" +
                                     "⏳Срок изготовления 8-10 дней\n" +
                                     "\uD83D\uDCB5Цена: 350 zł (Украина, Росиия, Белларусь )",33,update.getMessage().getChatId().toString()));
@@ -373,7 +373,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "3":
                         user.setType_doc(TypeDoc.type_1_1_3);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-07-52.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-07-52.jpg")).setChatId(update.getMessage().getChatId()));
 
                             sendApiMethod(send_Message_With_Remake("Комплект Документов на карту побыту\n" +
                                     " \uD83D\uDDC2(залончник, умова, КРС)\n" +
@@ -390,7 +390,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "4":
                         user.setType_doc(TypeDoc.type_1_1_4);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-14-02.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-14-02.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Карта побыту рабочая / студенческая\n" +
                                     "любая страна + полный пакет документов (оплата внеска входит)\n" +
                                     "\n" +
@@ -407,7 +407,7 @@ public class Bot extends TelegramLongPollingBot {
                         user.setType_doc(TypeDoc.type_1_1_5);
 
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-14-02.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-14-02.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Карта побыту рабочая / студенческая\n" +
                                     "любая страна + полный пакет документов (оплата внеска входит)\n" +
                                     "\n" +
@@ -423,7 +423,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "6":
                         user.setType_doc(TypeDoc.type_1_1_6);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-18-24.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-18-24.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Мельдунок (1 мес) + ПЕСЕЛЬ\n" +
                                     "\n" +
                                     "⏳Время ожидания 1 час\n" +
@@ -438,7 +438,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "7":
                         user.setType_doc(TypeDoc.type_1_1_7);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-20-38.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-20-38.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Умовы найму\n" +
                                     "\n" +
                                     "⏳Время ожидания 1 день\n" +
@@ -454,7 +454,7 @@ public class Bot extends TelegramLongPollingBot {
                         user.setType_doc(TypeDoc.type_1_1_8);
 
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-24-45.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-24-45.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Wstępne (powyżej 3 m) \n" +
                                     "\n" +
                                     "⏳Время ожидания 1 день\n" +
@@ -474,7 +474,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "9":
                         user.setType_doc(TypeDoc.type_1_1_9);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-27-38.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-27-38.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("медкнижка SANEPID \n" +
                                     "+ к ней orzeczenie lekarskie \n" +
                                     "+ анализы \n" +
@@ -496,7 +496,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "10":
                         user.setType_doc(TypeDoc.type_1_1_10);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-29-35.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-29-35.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Психотесты для водителей\n" +
                                     "\n" +
                                     "⏳Время ожидания 1 день\n" +
@@ -511,7 +511,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "11":
                         user.setType_doc(TypeDoc.type_1_1_11);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-32-58.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-32-58.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Orzeczenie для водителей\n" +
                                     "\n" +
                                     "⏳Время ожидания 1 день\n" +
@@ -541,7 +541,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "13":
                         user.setType_doc(TypeDoc.type_1__1_13);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-36-14.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-36-14.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Помощь в получение банковского кредита\n" +
                                     "\n" +
                                     "⏳Время ожидания (по ситуации)\n" +
@@ -555,7 +555,7 @@ public class Bot extends TelegramLongPollingBot {
                     case "14":
                         user.setType_doc(TypeDoc.type_1_1_14);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/src/main/java/org/telegramBot/zakaz1/photos/photo_2019-07-23_15-39-10.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-39-10.jpg")).setChatId(update.getMessage().getChatId()));
                             sendApiMethod(send_Message_With_Remake("Выписка из банка\n" +
                                     "\n" +
                                     "⏳Время ожидания 1 день\n" +
