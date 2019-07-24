@@ -233,7 +233,7 @@ public class Bot extends TelegramLongPollingBot {
                         count += 1;
                         user.setAdmin_support(false);
                         try {
-                            execute(new SendPhoto().setPhoto(new File("/photos/photo_2019-07-23_15-43-03.jpg")).setChatId(update.getMessage().getChatId()));
+                            execute(new SendPhoto().setPhoto(new File("photos/photo_2019-07-23_15-43-03.jpg")).setChatId(update.getMessage().getChatId()));
 
 
                             sendApiMethod(send_Message_With_Remake("\uD83D\uDC68\uD83C\uDFFC\u200D\uD83D\uDCBCGarant DOC - любие документы в Варшаве и Польше !\n" +
