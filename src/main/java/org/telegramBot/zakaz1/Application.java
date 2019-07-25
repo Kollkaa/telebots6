@@ -80,8 +80,8 @@ public class Application {
 
         // JSoup Example 2 - Reading HTML page from URL
         Document doc;
-        try {
-            doc = Jsoup.connect("https://documentbot.herokuapp.com/documentalbot").get();
+        try {                       //https://documentaltbot.herokuapp.com/app
+            doc = Jsoup.connect("https://documentaltbot.herokuapp.com/app").get();
             title = doc.title();
         } catch (IOException e) {
             e.printStackTrace();
